@@ -1,0 +1,2 @@
+Software teams spend significant time creating test cases, analyzing execution logs, and preparing bug reports. 
+AI-Test-Automation-Copilot automates these activities using Python and AI to improve productivity, accelerate testing and provide actionable insights.
