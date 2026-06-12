@@ -1,2 +1,3 @@
 class ConfigManager:
-    pass
+    def get(self,key):
+        pass
