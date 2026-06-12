@@ -1,0 +1,2 @@
+class BugReportGenerator:
+    pass
