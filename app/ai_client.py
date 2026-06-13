@@ -32,6 +32,6 @@ class AIClient:
             return json.loads(response)
         except json.JSONDecodeError:
             return {
-                "error": "invalid JSON returned from GEMINI"
+                "error": "invalid JSON returned from GEMINI",
                 "raw_response": response
             }

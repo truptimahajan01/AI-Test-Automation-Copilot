@@ -18,9 +18,20 @@ class TestCaseGenerator:
         )
 
         ai_client = AIClient()
-
         try:
-            return ai_client.generate(prompt)
+            test_cases = ai_client.get_test_cases(prompt)
+            storage = TeseCaseStorage()
+
+            file_path = storage.save_json(
+                user_story,
+                test_cases
+            )
+
+            return {
+                "test_cases": test_cases,
+                "file_path": file_path
+            }
+
         except Exception as e:
             return {
                 "status": "failed",
