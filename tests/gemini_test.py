@@ -1,7 +1,6 @@
 from google import genai
 from dotenv import load_dotenv
 import os
-import json
 
 load_dotenv()
 
@@ -12,15 +11,16 @@ class AIClient:
             api_key=os.getenv("GEMINI_API_KEY"),
         )
 
-    def generate(self, prompt):
+    def generate(self, prompt="Generate 3 test cases for Login functionality."):
         response = self.client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             contents=prompt
         )
 
-        response = response.text
+        return response.text
 
-        response = response.replace("'''json", "")
-        response = response.replace("'''", "")
+client = AIClient()
 
-        return json.loads(response)
+response = client.generate()
+
+print(response)
