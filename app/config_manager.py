@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class ConfigManager:
     def get(self,key):
-        pass
+        return os.getenv(key)
