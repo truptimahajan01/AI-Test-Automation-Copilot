@@ -1,0 +1,5 @@
+INFO Application Started
+INFO User Login Attempt
+ERROR Invalid Password
+WARNING Session Timeout
+ERROR Database Connection Lost

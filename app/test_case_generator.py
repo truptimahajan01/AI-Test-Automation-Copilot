@@ -1,5 +1,6 @@
 from app.ai_client import AIClient
 from app.prompt_builder import PromptBuilder
+from app.test_case_storage import TestCaseStorage
 from fastapi import HTTPException
 
 class TestCaseGenerator:
@@ -19,8 +20,8 @@ class TestCaseGenerator:
 
         ai_client = AIClient()
         try:
-            test_cases = ai_client.get_test_cases(prompt)
-            storage = TeseCaseStorage()
+            test_cases = ai_client.generate(prompt)
+            storage = TestCaseStorage()
 
             file_path = storage.save_json(
                 user_story,
