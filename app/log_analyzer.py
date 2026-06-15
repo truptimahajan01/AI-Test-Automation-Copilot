@@ -1,4 +1,7 @@
 from fastapi import UploadFile, HTTPException
+from datetime import datetime
+from app.prompt_builder import PromptBuilder
+from app.ai_client import AIClient
 
 
 class LogFileReader:
@@ -19,10 +22,21 @@ class LogAnalyzer:
         errors = []
         warnings = []
 
+        counts = {
+            "ERROR": 0,
+            "WARNING": 0,
+            "INFO": 0
+        }
+
         for line in content.splitlines():
-            if line.lower().startswith("error"):
+            for level in counts:
+                if line.upper().startswith(level):
+                    counts[level] += 1
+
+            if line.upper().startswith("ERROR"):
                 errors.append(line)
-            if line.lower().startswith("warning"):
+
+            if line.upper().startswith("WARNING"):
                 warnings.append(line)
 
         if len(errors) == 0 and len(warnings) == 0:
@@ -31,11 +45,33 @@ class LogAnalyzer:
             status = "unhealthy"
 
         return {
-            "error_count": len(errors),
-            "warning_count": len(warnings),
+            "counts": counts,
+            "total_lines": log_data["line_count"],
             "status": status,
             "errors": errors,
             "warnings": warnings
+        }
+
+class AISummaryGenerator:
+    def generate_summary(self, log_summary):
+        prompt_builder = PromptBuilder()
+
+        prompt_data = {
+            "counts": log_summary["counts"],
+            "errors": log_summary.get("errors", [])[:20],
+            "warnings": log_summary.get("warnings", [])[:20]
+        }
+
+        prompt = (
+            prompt_builder.build_log_summary_prompt(prompt_data)
+        )
+
+        ai_client = AIClient()
+
+        summary = ai_client.generate(prompt)
+        return {
+            "summary": summary,
+            "generated_at": datetime.now().isoformat(),
         }
 
 
