@@ -54,3 +54,17 @@ User Story:
 
         Keep each bullet under 1 sentence.
         """
+    def build_error_analysis_prompt(self,error):
+        return f"""
+        {self._get_role()}'
+        Analyze the following error:
+        Error: {error}
+        
+        Return exactly 3 bullet points:
+        1. Likely cause
+        2. Impact
+        3. Recommended fix
+        
+        Keep each bullet under 1 sentence.
+        Do not include introductions or conclusions.
+        """

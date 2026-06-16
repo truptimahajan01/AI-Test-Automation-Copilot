@@ -32,6 +32,11 @@ class TestCaseGenerator:
                 "test_cases": test_cases,
                 "file_path": file_path
             }
+        except json.JSONDecodeError:
+            raise HTTPException(
+                status_code=500,
+                detail="Invalid JSON returned from AI"
+            )
 
         except Exception as e:
             return {

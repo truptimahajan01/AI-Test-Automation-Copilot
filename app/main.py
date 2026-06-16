@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from app.log_analyzer import LogFileReader, LogAnalyzer, AISummaryGenerator
 from app.test_case_generator import TestCaseGenerator
 from app.models import GenerateTestsRequest
-
+from app.error_analyzer import ErrorAnalyzer
 app = FastAPI()
 
 @app.get("/health")
@@ -36,3 +36,8 @@ def analyze_log(file: UploadFile = File(...)):
        "analysis": analysis,
        "ai_summary": ai_summary
    }
+
+@app.post("/analyze-error")
+def analyze_error(error: str):
+    analyzer = ErrorAnalyzer()
+    return analyzer.analyze(error)

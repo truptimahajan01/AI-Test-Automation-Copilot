@@ -28,10 +28,11 @@ class AIClient:
         response = response.replace("```json", "")
         response = response.replace("```", "")
 
-        try:
-            return json.loads(response)
-        except json.JSONDecodeError:
-            return {
-                "error": "invalid JSON returned from GEMINI",
-                "raw_response": response
-            }
+        return response
+        # try:
+        #     return json.loads(response)
+        # except json.JSONDecodeError:
+        #     return {
+        #         "error": "invalid JSON returned from GEMINI",
+        #         "raw_response": response
+        #     }
