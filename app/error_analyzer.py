@@ -14,10 +14,13 @@ class ErrorAnalyzer:
 
         ai_client = AIClient()
 
-        analysis = ai_client.generate(prompt)
+        try:
+            analysis = ai_client.generate(prompt)
+        except Exception as e:
+            analysis = f"AI unavailable: {str(e)}"
 
         return {
             "error": error,
             "analysis": analysis,
             "generated_at": datetime.now().isoformat(),
-        }
+            }

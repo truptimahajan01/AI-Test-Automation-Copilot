@@ -3,6 +3,8 @@ from app.log_analyzer import LogFileReader, LogAnalyzer, AISummaryGenerator
 from app.test_case_generator import TestCaseGenerator
 from app.models import GenerateTestsRequest
 from app.error_analyzer import ErrorAnalyzer
+from app.bug_report_generator import BugReportGenerator
+
 app = FastAPI()
 
 @app.get("/health")
@@ -41,3 +43,17 @@ def analyze_log(file: UploadFile = File(...)):
 def analyze_error(error: str):
     analyzer = ErrorAnalyzer()
     return analyzer.analyze(error)
+
+@app.post("/generate-bug-report")
+def generate_bug_report(errorG: str):
+    error_analyzer = ErrorAnalyzer()
+
+    error_analysis = (
+        error_analyzer.analyze(errorG)
+    )
+
+    bug_report_generator = (BugReportGenerator())
+
+    bug_report = bug_report_generator.generate(errorG,error_analysis["analysis"])
+
+    return bug_report

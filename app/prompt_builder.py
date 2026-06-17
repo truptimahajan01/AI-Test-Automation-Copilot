@@ -68,3 +68,35 @@ User Story:
         Keep each bullet under 1 sentence.
         Do not include introductions or conclusions.
         """
+
+    def build_bug_report_prompt(self,errorG,analysis):
+        return f"""
+{self._get_role()}
+Generate a bug report from the following information
+
+Error: {errorG}
+
+Analysis: {analysis}
+
+Return only valid JSON.
+
+{{
+    "summary": "",
+    "severity": "",
+    "reproduction_steps": [
+    "",
+    "",
+    ""
+    ]
+}}
+
+Severity must be one of:
+LOW
+MEDIUM
+HIGH
+CRITICAL
+
+Do not return markdown.
+Do not return explanation.
+
+"""
