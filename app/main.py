@@ -4,7 +4,7 @@ from app.test_case_generator import TestCaseGenerator
 from app.models import GenerateTestsRequest
 from app.error_analyzer import ErrorAnalyzer
 from app.bug_report_generator import BugReportGenerator
-
+from app.markdown_exporter import MarkdownExporter
 app = FastAPI()
 
 @app.get("/health")
@@ -56,4 +56,10 @@ def generate_bug_report(errorG: str):
 
     bug_report = bug_report_generator.generate(errorG,error_analysis["analysis"])
 
-    return bug_report
+    exporter = MarkdownExporter()
+    report_file = exporter.export(bug_report)
+
+    return {
+        "bug_report": bug_report,
+        "report_file": report_file
+    }
