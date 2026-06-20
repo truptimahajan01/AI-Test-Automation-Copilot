@@ -51,7 +51,7 @@ class DatabaseManager:
 
     def save_test_case(self, user_story, test_cases, file_path):
         created_at = datetime.now().isoformat()
-        test_case_json = test_cases
+        test_case_json = json.dumps(test_cases)
 
         self.cursor.execute("""
             INSERT INTO test_cases (user_story, test_cases, file_path, created_at)
