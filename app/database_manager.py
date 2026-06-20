@@ -8,6 +8,7 @@ class DatabaseManager:
     def __init__(self):
         os.makedirs("data", exist_ok=True)
         self.conn = sqlite3.connect("data/database.db")
+        self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
         self.create_tables()
 
@@ -61,3 +62,46 @@ class DatabaseManager:
 
     def close(self):
         self.conn.close()
+
+
+    def get_all_test_cases(self):
+        self.cursor.execute(
+            "SELECT * FROM test_cases"
+        )
+
+        rows =  self.cursor.fetchall()
+
+        result = []
+        for row in rows:
+            result.append(dict(row))
+
+        return result
+
+    def get_test_case_by_id(self, test_case_id):
+        self.cursor.execute(
+            "SELECT * FROM test_cases WHERE id = ?",
+            (test_case_id,)
+        )
+
+        row = self.cursor.fetchone()
+
+        if not row:
+            return None
+
+        return dict(row)
+
+    def get_all_reports(self):
+        self.cursor.execute("SELECT * FROM reports")
+        rows = self.cursor.fetchall()
+        result = []
+        for row in rows:
+            result.append(dict(row))
+
+        return result
+
+    def get_report_by_id(self, report_id):
+        self.cursor.execute("SELECT * FROM reports WHERE id = ?", (report_id,))
+        row = self.cursor.fetchone()
+        if not row:
+            return None
+        return dict(row)

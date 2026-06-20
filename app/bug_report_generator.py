@@ -2,6 +2,8 @@ from app.ai_client import AIClient
 import json
 from datetime import datetime
 from app.prompt_builder import PromptBuilder
+from app.markdown_exporter import MarkdownExporter
+from app.database_manager import DatabaseManager
 
 class BugReportGenerator:
     def generate(self, error, analysis,):
@@ -14,9 +16,18 @@ class BugReportGenerator:
 
         bug_report = json.loads(response)
 
-        report_file = exporter.export(bug_report)
+        report_data = {
+            "error": error,
+            "generated_at": datetime.now().isoformat(),
+            "bug_report": bug_report
+        }
 
-        db.save_report(bug_report, report_file["file_path"])
+        exporter = MarkdownExporter()
+        db = DatabaseManager()
+
+        report_file = exporter.export(report_data)
+
+        db.save_report(report_data, report_file["file_path"])
 
         allowed_severities = {
             "LOW",
@@ -50,8 +61,4 @@ class BugReportGenerator:
         if len(bug_report["reproduction_steps"]) == 0:
             raise ValueError("reproduction_steps cannot be an empty")
 
-        return {
-            "error": error,
-            "generated_at": datetime.now().isoformat(),
-            "bug_report": bug_report
-        }
+        return report_data
