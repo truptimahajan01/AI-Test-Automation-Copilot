@@ -1,1 +1,20 @@
 .env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Generated files
+generated_tests/
+reports/
+
+# Database
+data/database.db
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
