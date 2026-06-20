@@ -3,7 +3,11 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
 .venv/
+.idea/
 
 # Generated files
 generated_tests/
