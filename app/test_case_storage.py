@@ -1,4 +1,6 @@
 from datetime import datetime
+import os
+import json
 
 class TestCaseStorage:
 
@@ -15,6 +17,7 @@ class TestCaseStorage:
         return f"generated_tests/{short_name}_{timestamp}.json"
 
     def save_json(self, user_story, test_cases):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.create_directory()
         file_path = self.create_filename(user_story, timestamp)
         with open(file_path, "w") as file:

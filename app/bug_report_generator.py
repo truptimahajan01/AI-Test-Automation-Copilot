@@ -14,6 +14,10 @@ class BugReportGenerator:
 
         bug_report = json.loads(response)
 
+        report_file = exporter.export(bug_report)
+
+        db.save_report(bug_report, report_file["file_path"])
+
         allowed_severities = {
             "LOW",
             "MEDIUM",

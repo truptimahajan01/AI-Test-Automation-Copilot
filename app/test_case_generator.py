@@ -1,7 +1,9 @@
 from app.ai_client import AIClient
+from app.database_manager import DatabaseManager
 from app.prompt_builder import PromptBuilder
 from app.test_case_storage import TestCaseStorage
 from fastapi import HTTPException
+import json
 
 class TestCaseGenerator:
     def generate_test_cases(self, user_story):
@@ -21,11 +23,18 @@ class TestCaseGenerator:
         ai_client = AIClient()
         try:
             test_cases = ai_client.generate(prompt)
+
             storage = TestCaseStorage()
 
             file_path = storage.save_json(
                 user_story,
                 test_cases
+            )
+
+            db = DatabaseManager()
+
+            db.save_test_case(
+                user_story, test_cases, file_path
             )
 
             return {
